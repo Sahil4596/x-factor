@@ -393,19 +393,36 @@ body {
 /* Mobile Responsiveness */
 @media screen and (max-width: 991px) {
     .split_background {
-        flex-direction: column-reverse;
+        position: relative;
+        display: block;
     }
     
     .split_media_side {
         width: 100%;
-        height: 40vh;
-        min-height: 300px;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        box-shadow: none;
+    }
+
+    .split_media_side::after {
+        background: rgba(0, 0, 0, 0.4); /* Dark overlay to make text pop */
     }
     
     .split_content_side {
         width: 100%;
-        min-height: 60vh;
-        padding: 30px 15px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 2;
+        background: transparent;
+        padding: 20px;
+    }
+
+    .glassmorphism_card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
     }
     
     .person_name_heading {
@@ -415,19 +432,24 @@ body {
     .proposal_message_text {
         font-size: 1.1rem;
     }
+
+    .bgm-player-container {
+        top: 15px;
+        right: 15px;
+    }
 }
 
 @media screen and (max-width: 575px) {
-    .split_media_side {
-        height: 35vh;
-    }
     .split_content_side {
-        min-height: 65vh;
+        padding: 15px;
     }
     .glassmorphism_card {
         border-radius: 16px;
     }
     .hero_text-title {
         font-size: 2.2rem;
+    }
+    .proposal_card_body {
+        padding: 30px 20px !important;
     }
 }

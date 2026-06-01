@@ -54,17 +54,28 @@ const Proposal = ({ className = '' }) => {
     };
 
     // Handle runaway "No" button
-    const handleNoHover = () => {
+    const handleNoHover = (e) => {
+        if (e && e.cancelable && e.type === 'touchstart') {
+            e.preventDefault();
+        }
         setNoHoverCount(prev => prev + 1);
         
-        // Generate random position within safe margins
-        const padding = 100;
-        const randomX = Math.random() * (window.innerWidth - 2 * padding) - (window.innerWidth / 2 - padding);
-        const randomY = Math.random() * (window.innerHeight - 2 * padding) - (window.innerHeight / 2 - padding);
+        // Button approximate dimensions
+        const btnWidth = 120;
+        const btnHeight = 60;
+        const safePadding = 20;
+
+        // Calculate safe boundaries for the viewport
+        const maxLeft = window.innerWidth - btnWidth - safePadding;
+        const maxTop = window.innerHeight - btnHeight - safePadding;
+
+        // Pick a random spot inside the safe boundaries
+        const randomLeft = Math.max(safePadding, Math.random() * maxLeft);
+        const randomTop = Math.max(safePadding, Math.random() * maxTop);
 
         setNoButtonPos({
-            x: randomX,
-            y: randomY,
+            x: randomLeft,
+            y: randomTop,
             isCustom: true
         });
     };
@@ -169,9 +180,9 @@ const Proposal = ({ className = '' }) => {
                                                             noButtonPos.isCustom
                                                                 ? {
                                                                       position: 'fixed',
-                                                                      left: '50%',
-                                                                      top: '50%',
-                                                                      transform: `translate(calc(-50% + ${noButtonPos.x}px), calc(-50% + ${noButtonPos.y}px))`,
+                                                                      left: `${noButtonPos.x}px`,
+                                                                      top: `${noButtonPos.y}px`,
+                                                                      transform: 'none',
                                                                       zIndex: 9999,
                                                                       transition: 'all 0.15s ease-out',
                                                                   }

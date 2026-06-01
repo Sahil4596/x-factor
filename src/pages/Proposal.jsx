@@ -60,22 +60,17 @@ const Proposal = ({ className = '' }) => {
         }
         setNoHoverCount(prev => prev + 1);
         
-        // Button approximate dimensions
-        const btnWidth = 120;
-        const btnHeight = 60;
-        const safePadding = 20;
-
-        // Calculate safe boundaries for the viewport
-        const maxLeft = window.innerWidth - btnWidth - safePadding;
-        const maxTop = window.innerHeight - btnHeight - safePadding;
-
-        // Pick a random spot inside the safe boundaries
-        const randomLeft = Math.max(safePadding, Math.random() * maxLeft);
-        const randomTop = Math.max(safePadding, Math.random() * maxTop);
+        // Use relative dodging instead of absolute viewport coordinates to prevent it from flying off screen
+        const jumpRangeX = window.innerWidth < 600 ? 120 : 300; 
+        const jumpRangeY = window.innerWidth < 600 ? 80 : 150;
+        
+        // Random relative offset between -range/2 and +range/2
+        const randomOffsetX = (Math.random() - 0.5) * jumpRangeX;
+        const randomOffsetY = (Math.random() - 0.5) * jumpRangeY;
 
         setNoButtonPos({
-            x: randomLeft,
-            y: randomTop,
+            x: randomOffsetX,
+            y: randomOffsetY,
             isCustom: true
         });
     };
@@ -176,18 +171,13 @@ const Proposal = ({ className = '' }) => {
                                                     <Button
                                                         variant="outline-dark"
                                                         className="px-5 py-3 rounded-pill proposal_btn no_btn"
-                                                        style={
-                                                            noButtonPos.isCustom
-                                                                ? {
-                                                                      position: 'fixed',
-                                                                      left: `${noButtonPos.x}px`,
-                                                                      top: `${noButtonPos.y}px`,
-                                                                      transform: 'none',
-                                                                      zIndex: 9999,
-                                                                      transition: 'all 0.15s ease-out',
-                                                                  }
-                                                                : {}
-                                                        }
+                                                        style={{
+                                                            transform: noButtonPos.isCustom 
+                                                                ? `translate(${noButtonPos.x}px, ${noButtonPos.y}px)` 
+                                                                : 'none',
+                                                            transition: 'transform 0.15s ease-out',
+                                                            zIndex: 10
+                                                        }}
                                                         onMouseEnter={handleNoHover}
                                                         onTouchStart={handleNoHover}
                                                         onClick={handleNoHover}

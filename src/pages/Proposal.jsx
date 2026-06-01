@@ -79,12 +79,6 @@ const Proposal = ({ className = '' }) => {
     const handleYes = () => {
         setSaidYes(true);
         setShowConfetti(true);
-        // Play an explosion of hearts or trigger WhatsApp redirect after 3 seconds
-        setTimeout(() => {
-            if (replyUrl) {
-                window.location.href = replyUrl;
-            }
-        }, 3500);
     };
 
     // Render heart confetti falling
@@ -205,7 +199,7 @@ const Proposal = ({ className = '' }) => {
                                             I am the happiest person alive! I can't wait to live this life with you, my musk melon! 🍈❤️
                                         </p>
                                         <p className="redirecting_text small text-muted">
-                                            Redirecting you to message me on WhatsApp...
+                                            Click the button below to text me!
                                         </p>
                                         {replyUrl && (
                                             <Button 
